@@ -128,9 +128,10 @@ public class RemoteService extends Service {
     /**
      * Our Handler used to execute operations on the main thread.  This is used
      * to schedule increments of our value.
+     * RemoteService远端实现的地方
      */
     private final Handler mHandler = new Handler() {
-        @Override public void handleMessage(Message msg) {
+       @Override public void handleMessage(Message msg) {
             switch (msg.what) {
                 
                 // It is time to bump the value!

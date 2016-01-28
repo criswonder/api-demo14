@@ -18,6 +18,8 @@ package com.example.android.apis.view;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.example.android.apis.R;
@@ -39,34 +41,42 @@ public class WebView1 extends Activity {
         
         WebView wv;
         
-        wv = (WebView) findViewById(R.id.wv1);
-        wv.loadData("<a href='x'>Hello World! - 1</a>", mimeType, encoding);
-        
-        wv = (WebView) findViewById(R.id.wv2);
-        wv.loadData("<a href='x'>Hello World! - 2</a>", mimeType, encoding);
-        
-        wv = (WebView) findViewById(R.id.wv3);
-        wv.loadData("<a href='x'>Hello World! - 3</a>", mimeType, encoding);
-        
-        wv = (WebView) findViewById(R.id.wv4);
-        wv.loadData("<a href='x'>Hello World! - 4</a>", mimeType, encoding);
-        
-        wv = (WebView) findViewById(R.id.wv5);
-        wv.loadData("<a href='x'>Hello World! - 5</a>", mimeType, encoding);
-        
-        wv = (WebView) findViewById(R.id.wv6);
-        wv.loadData("<a href='x'>Hello World! - 6</a>", mimeType, encoding);
-        
-        wv = (WebView) findViewById(R.id.wv7);
-        wv.loadData("<a href='x'>Hello World! - 7</a>", mimeType, encoding);
-        
-        wv = (WebView) findViewById(R.id.wv8);
-        wv.loadData("<a href='x'>Hello World! - 8</a>", mimeType, encoding);
-        
-        wv = (WebView) findViewById(R.id.wv9);
-        wv.loadData("<a href='x'>Hello World! - 9</a>", mimeType, encoding);
+//        wv = (WebView) findViewById(R.id.wv1);
+//        wv.loadData("<a href='x'>Hello World! - 1</a>", mimeType, encoding);
+//
+//        wv = (WebView) findViewById(R.id.wv2);
+//        wv.loadData("<a href='x'>Hello World! - 2</a>", mimeType, encoding);
+//
+//        wv = (WebView) findViewById(R.id.wv3);
+//        wv.loadData("<a href='x'>Hello World! - 3</a>", mimeType, encoding);
+//
+//        wv = (WebView) findViewById(R.id.wv4);
+//        wv.loadData("<a href='x'>Hello World! - 4</a>", mimeType, encoding);
+//
+//        wv = (WebView) findViewById(R.id.wv5);
+//        wv.loadData("<a href='x'>Hello World! - 5</a>", mimeType, encoding);
+//
+//        wv = (WebView) findViewById(R.id.wv6);
+//        wv.loadData("<a href='x'>Hello World! - 6</a>", mimeType, encoding);
+//
+//        wv = (WebView) findViewById(R.id.wv7);
+//        wv.loadData("<a href='x'>Hello World! - 7</a>", mimeType, encoding);
+//
+//        wv = (WebView) findViewById(R.id.wv8);
+//        wv.loadData("<a href='x'>Hello World! - 8</a>", mimeType, encoding);
+//
+//        wv = (WebView) findViewById(R.id.wv9);
+//        wv.loadData("<a href='x'>Hello World! - 9</a>", mimeType, encoding);
         
         wv = (WebView) findViewById(R.id.wv10);
-        wv.loadData("<a href='x'>Hello World! - 10</a>", mimeType, encoding);
+//        wv.loadData("<a href='x'>Hello World! - 10</a>", mimeType, encoding);
+
+        WebSettings webSettings = wv.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+
+        wv.setWebChromeClient(new WebChromeClient(){
+
+        });
+        wv.loadUrl("http://miao.m.tmall.com/?ttid=10003012@tmall_android_5.7.51&abbucket=&acm=201505052109-2.1003.2.364916&aldid=uj6m5AuY&hybrid=1&abtest=&pos=2&spm=a1z60.7691149.choiceMarketLine2.2");
     }
 }

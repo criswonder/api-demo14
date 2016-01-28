@@ -22,6 +22,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -35,6 +36,14 @@ import java.util.List;
 import java.util.Map;
 
 public class ApiDemos extends ListActivity {
+
+    private static final String TAG = "ApiDemos";
+
+    @Override
+    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+        Log.d(TAG,"------onKeyLongPress--------");
+        return super.onKeyLongPress(keyCode, event);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
