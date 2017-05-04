@@ -21,7 +21,6 @@ package com.example.android.apis.graphics;
 import com.example.android.apis.R;
 
 import android.app.Activity;
-import android.app.Application;
 import android.os.Bundle;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap;
@@ -34,8 +33,6 @@ import android.widget.ScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
@@ -50,27 +47,27 @@ public class DensityActivity extends Activity {
 
         final LayoutInflater li = (LayoutInflater)getSystemService(
                 LAYOUT_INFLATER_SERVICE);
-        
+
         this.setTitle(R.string.density_title);
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
 
         LinearLayout layout = new LinearLayout(this);
-//        addBitmapDrawable(layout, R.drawable.logo120dpi, true);
+        addBitmapDrawable(layout, R.drawable.logo120dpi, true);
         addBitmapDrawable(layout, R.drawable.logo160dpi, true);
         addBitmapDrawable(layout, R.drawable.logo240dpi, true);
         addLabelToRoot(root, "Prescaled bitmap in drawable");
         addChildToRoot(root, layout);
 
         layout = new LinearLayout(this);
-//        addBitmapDrawable(layout, R.drawable.logo120dpi, false);
+        addBitmapDrawable(layout, R.drawable.logo120dpi, false);
         addBitmapDrawable(layout, R.drawable.logo160dpi, false);
         addBitmapDrawable(layout, R.drawable.logo240dpi, false);
         addLabelToRoot(root, "Autoscaled bitmap in drawable");
         addChildToRoot(root, layout);
 
         layout = new LinearLayout(this);
-//        addResourceDrawable(layout, R.drawable.logo120dpi);
+        addResourceDrawable(layout, R.drawable.logo120dpi);
         addResourceDrawable(layout, R.drawable.logo160dpi);
         addResourceDrawable(layout, R.drawable.logo240dpi);
         addLabelToRoot(root, "Prescaled resource drawable");
@@ -79,20 +76,20 @@ public class DensityActivity extends Activity {
         layout = (LinearLayout)li.inflate(R.layout.density_image_views, null);
         addLabelToRoot(root, "Inflated layout");
         addChildToRoot(root, layout);
-        
+
         layout = (LinearLayout)li.inflate(R.layout.density_styled_image_views, null);
         addLabelToRoot(root, "Inflated styled layout");
         addChildToRoot(root, layout);
-        
+
         layout = new LinearLayout(this);
-//        addCanvasBitmap(layout, R.drawable.logo120dpi, true);
+        addCanvasBitmap(layout, R.drawable.logo120dpi, true);
         addCanvasBitmap(layout, R.drawable.logo160dpi, true);
         addCanvasBitmap(layout, R.drawable.logo240dpi, true);
         addLabelToRoot(root, "Prescaled bitmap");
         addChildToRoot(root, layout);
 
         layout = new LinearLayout(this);
-//        addCanvasBitmap(layout, R.drawable.logo120dpi, false);
+        addCanvasBitmap(layout, R.drawable.logo120dpi, false);
         addCanvasBitmap(layout, R.drawable.logo160dpi, false);
         addCanvasBitmap(layout, R.drawable.logo240dpi, false);
         addLabelToRoot(root, "Autoscaled bitmap");
@@ -117,20 +114,20 @@ public class DensityActivity extends Activity {
 
     private View scrollWrap(View view) {
         ScrollView scroller = new ScrollView(this);
-        scroller.addView(view, new ScrollView.LayoutParams(ScrollView.LayoutParams.FILL_PARENT,
-                ScrollView.LayoutParams.FILL_PARENT));
+        scroller.addView(view, new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT,
+                ScrollView.LayoutParams.MATCH_PARENT));
         return scroller;
     }
 
     private void addLabelToRoot(LinearLayout root, String text) {
         TextView label = new TextView(this);
         label.setText(text);
-        root.addView(label, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+        root.addView(label, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
     }
 
     private void addChildToRoot(LinearLayout root, LinearLayout layout) {
-        root.addView(layout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+        root.addView(layout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
     }
 

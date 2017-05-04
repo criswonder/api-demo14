@@ -16,19 +16,11 @@
 
 package com.example.android.apis.graphics;
 
-import android.R;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Region;
+import android.graphics.*;
 import android.os.Bundle;
 import android.view.View;
 
-//android:label="Graphics/Clipping"
 public class Clipping extends GraphicsActivity {
 
     @Override
@@ -52,7 +44,6 @@ public class Clipping extends GraphicsActivity {
             mPaint.setTextAlign(Paint.Align.RIGHT);
 
             mPath = new Path();
-
         }
 
         private void drawScene(Canvas canvas) {
@@ -67,43 +58,21 @@ public class Clipping extends GraphicsActivity {
             canvas.drawCircle(30, 70, 30, mPaint);
 
             mPaint.setColor(Color.BLUE);
-            canvas.drawText("Clipping", 50, 30, mPaint);
+            canvas.drawText("Clipping", 100, 30, mPaint);
         }
 
         @Override protected void onDraw(Canvas canvas) {
-//            canvas.setBitmap(drawBackground(2,800,480));
-//            canvas.drawBitmap(drawBackground(2,800,480), null, null);
-
-            Paint background = new Paint();
-            background.setColor(Color.RED);
-            background.setAntiAlias(true);
-            int width=480, cellSize=10, height=800;
-            for (int i = 0; i < width / cellSize; i++) {
-                canvas.drawLine(cellSize * i, 0, cellSize * i, height, background);
-            }
-
-            for (int i = 0; i < height / cellSize; i++) {
-                canvas.drawLine(0, cellSize * i, width, cellSize * i, background);
-            }
+            canvas.drawColor(Color.GRAY);
 
             canvas.save();
-            //Preconcat the current matrix with the specified translation
             canvas.translate(10, 10);
             drawScene(canvas);
             canvas.restore();
 
             canvas.save();
-            canvas.translate(160, 20);
-            //clipRect(int left, int top, int right, int bottom)
-            //Intersect the current clip with the specified rectangle,
-            //which is expressed in local coordinates.
-
-//            canvas.drawColor(Color.RED);
-//            canvas.clipRect(10, 10, 90, 90,Region.Op.XOR);
+            canvas.translate(160, 10);
             canvas.clipRect(10, 10, 90, 90);
-            canvas.drawColor(Color.GRAY);
             canvas.clipRect(30, 30, 70, 70, Region.Op.DIFFERENCE);
-
             drawScene(canvas);
             canvas.restore();
 
@@ -137,23 +106,6 @@ public class Clipping extends GraphicsActivity {
             drawScene(canvas);
             canvas.restore();
         }
-    }
-
-    public static Bitmap drawBackground(int cellSize, int height, int widht) {
-        Bitmap bitmap = Bitmap.createBitmap(widht, height, Config.ARGB_8888);
-        Canvas cv = new Canvas(bitmap);
-        Paint background = new Paint();
-        background.setColor(R.color.background_light);
-        cv.drawRect(0, 0, widht, height, background);
-        background.setAntiAlias(true);
-        background.setColor(R.color.black);
-        for (int i = 0; i < widht / cellSize; i++) {
-            cv.drawLine(cellSize * i, 0, cellSize * i, height, background);
-        }
-        for (int i = 0; i < height / cellSize; i++) {
-            cv.drawLine(0, cellSize * i, widht, cellSize * i, background);
-        }
-        return bitmap;
     }
 }
 

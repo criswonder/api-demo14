@@ -22,7 +22,6 @@ import com.example.android.apis.R;
 import com.example.android.apis.view.Controls1;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -31,10 +30,7 @@ import android.widget.Button;
 
 
 /**
- * <p>Example of explicitly starting and stopping the {@link LocalService}.
- * This demonstrates the implementation of a service that runs in the same
- * process as the rest of the application, which is explicitly started and stopped
- * as desired.</p>
+ * <p>Example of using a custom animation when transitioning between activities.</p>
  */
 public class Animation extends Activity {
     @Override

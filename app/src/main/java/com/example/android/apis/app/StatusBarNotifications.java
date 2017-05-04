@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -148,15 +149,47 @@ public class StatusBarNotifications extends Activity {
         // The PendingIntent to launch our activity if the user selects this
         // notification.  Note the use of FLAG_UPDATE_CURRENT so that if there
         // is already an active matching pending intent, we will update its
-        // extras to be the ones passed in here.
+        // extras (and other Intents in the array) to be the ones passed in here.
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, NotificationDisplay.class)
-                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        .putExtra("moodimg", moodId),
+                new Intent(this, NotificationDisplay.class).putExtra("moodimg", moodId),
                 PendingIntent.FLAG_UPDATE_CURRENT);
         return contentIntent;
     }
     
+
+    private PendingIntent makeDefaultIntent() {
+        // A typical convention for notifications is to launch the user deeply
+        // into an application representing the data in the notification; to
+        // accomplish this, we can build an array of intents to insert the back
+        // stack stack history above the item being displayed.
+        Intent[] intents = new Intent[4];
+
+        // First: root activity of ApiDemos.
+        // This is a convenient way to make the proper Intent to launch and
+        // reset an application's task.
+        intents[0] = Intent.makeRestartActivityTask(new ComponentName(this,
+                com.example.android.apis.ApiDemos.class));
+
+        // "App"
+        intents[1] = new Intent(this, com.example.android.apis.ApiDemos.class);
+        intents[1].putExtra("com.example.android.apis.Path", "App");
+        // "App/Notification"
+        intents[2] = new Intent(this, com.example.android.apis.ApiDemos.class);
+        intents[2].putExtra("com.example.android.apis.Path", "App/Notification");
+
+        // Now the activity to display to the user.
+        intents[3] = new Intent(this, StatusBarNotifications.class);
+
+        // The PendingIntent to launch our activity if the user selects this
+        // notification.  Note the use of FLAG_UPDATE_CURRENT so that if there
+        // is already an active matching pending intent, we will update its
+        // extras (and other Intents in the array) to be the ones passed in here.
+        PendingIntent contentIntent = PendingIntent.getActivities(this, 0,
+                intents, PendingIntent.FLAG_UPDATE_CURRENT);
+        return contentIntent;
+    }
+
+
     private void setMood(int moodId, int textId, boolean showTicker) {
         // In this sample, we'll use the same text for the ticker and the expanded notification
         CharSequence text = getText(textId);
@@ -174,7 +207,7 @@ public class StatusBarNotifications extends Activity {
 
         // Send the notification.
         // We use a layout id because it is a unique number.  We use it later to cancel.
-        mNotificationManager.notify(R.layout.status_bar_notifications, notification);
+        mNotificationManager.notify(MOOD_NOTIFICATIONS, notification);
     }
 
     private void setMoodView(int moodId, int textId) {
@@ -202,7 +235,7 @@ public class StatusBarNotifications extends Activity {
 
         // we use a string id because is a unique number.  we use it later to cancel the
         // notification
-        mNotificationManager.notify(R.layout.status_bar_notifications, notif);
+        mNotificationManager.notify(MOOD_NOTIFICATIONS, notif);
     }
     
     private void setDefault(int defaults) {
@@ -210,8 +243,7 @@ public class StatusBarNotifications extends Activity {
         // This method sets the defaults on the notification before posting it.
         
         // This is who should be launched if the user selects our notification.
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, StatusBarNotifications.class), 0);
+        PendingIntent contentIntent = makeDefaultIntent();
 
         // In this sample, we'll use the same text for the ticker and the expanded notification
         CharSequence text = getText(R.string.status_bar_notifications_happy_message);
@@ -231,8 +263,8 @@ public class StatusBarNotifications extends Activity {
         notification.defaults = defaults;
         
         mNotificationManager.notify(
-                   R.layout.status_bar_notifications, // we use a string id because it is a unique
-                                                      // number.  we use it later to cancel the
-                   notification);                     // notification
+                MOOD_NOTIFICATIONS, // we use a string id because it is a unique
+                                    // number.  we use it later to cancel the notification
+                notification);
     }    
 }

@@ -23,7 +23,6 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
-import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -35,6 +34,7 @@ import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import android.opengl.GLUtils;
 import android.os.SystemClock;
+import android.util.Log;
 
 import com.example.android.apis.R;
 
@@ -96,7 +96,7 @@ public class SpriteTextRenderer implements GLSurfaceView.Renderer{
                 GL10.GL_REPLACE);
 
         InputStream is = mContext.getResources()
-                .openRawResource(R.drawable.robot);
+                .openRawResource(R.raw.robot);
         Bitmap bitmap;
         try {
             bitmap = BitmapFactory.decodeStream(is);
@@ -171,6 +171,15 @@ public class SpriteTextRenderer implements GLSurfaceView.Renderer{
                 GL10.GL_REPEAT);
         gl.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T,
                 GL10.GL_REPEAT);
+
+        if (false) {
+            long time = SystemClock.uptimeMillis();
+            if (mLastTime != 0) {
+                long delta = time - mLastTime;
+                Log.w("time", Long.toString(delta));
+            }
+            mLastTime = time;
+        }
 
         long time = SystemClock.uptimeMillis() % 4000L;
         float angle = 0.090f * ((int) time);
@@ -266,6 +275,7 @@ public class SpriteTextRenderer implements GLSurfaceView.Renderer{
     private Projector mProjector;
     private NumericSprite mNumericSprite;
     private float[] mScratch = new float[8];
+    private long mLastTime;
 }
 
 class Triangle {

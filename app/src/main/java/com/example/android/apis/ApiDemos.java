@@ -21,8 +21,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -37,14 +35,6 @@ import java.util.Map;
 
 public class ApiDemos extends ListActivity {
 
-    private static final String TAG = "ApiDemos";
-
-    @Override
-    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-        Log.d(TAG,"------onKeyLongPress--------");
-        return super.onKeyLongPress(keyCode, event);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,62 +47,45 @@ public class ApiDemos extends ListActivity {
         }
 
         setListAdapter(new SimpleAdapter(this, getData(path),
-                android.R.layout.simple_list_item_1, new String[] { "title" },
-                new int[] { android.R.id.text1 }));
+                R.layout.simple_list_item_1, new String[]{"title"},
+                new int[]{R.id.text1}));
         getListView().setTextFilterEnabled(true);
     }
 
-    protected List getData(String prefix) {
-        List<Map> myData = new ArrayList<Map>();
+    protected List<Map<String, Object>> getData(String prefix) {
+        List<Map<String, Object>> myData = new ArrayList<Map<String, Object>>();
 
         Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
         mainIntent.addCategory(Intent.CATEGORY_SAMPLE_CODE);
 
         PackageManager pm = getPackageManager();
-        /**-------------------------------------------------------------------------------
-         * TODO queryIntentActivities 说明
-         * Retrieve all activities that can be performed for the given intent.
-         * 就是说androidmanifest.xml里面的activity能够resolve 这个mainIntent的都会被找到
-         -------------------------------------------------------------------------------*/
         List<ResolveInfo> list = pm.queryIntentActivities(mainIntent, 0);
 
         if (null == list)
             return myData;
 
         String[] prefixPath;
+        String prefixWithSlash = prefix;
 
         if (prefix.equals("")) {
             prefixPath = null;
         } else {
             prefixPath = prefix.split("/");
+            prefixWithSlash = prefix + "/";
         }
 
         int len = list.size();
 
         Map<String, Boolean> entries = new HashMap<String, Boolean>();
-        /**-----------------------------------------------------------------------------
-         * TODO 每次len都是201, 都是把所有的Activity都扫描一遍。按着指定的前缀，产生一个List<Map>
-         * 作为listview的adapter。当你点击一个list的item的时候如果是browseIntent就会启动一个ApiDemos
-         * Activity。不要认为是公用了同一个ApiDemos activity。当是activityintent的时候就会启动一个
-         * sample activity.
-         *-----------------------------------------------------------------------------*/
-        Log.i("ApiDemos", len+"");
+
         for (int i = 0; i < len; i++) {
             ResolveInfo info = list.get(i);
-            CharSequence labelSeq = info.loadLabel(pm); //这里如果activity没有label就会获得name
-
-            /**-----------------------------------------------------------------------------
-             * TODO ActivityInfo的name属性。
-             * info.activityInfo.name;
-             * info.activityInfo 的class是ActivityInfo->android.content.pm.PackageItemInfo
-             * info.activityInfo.name 取的是PackageItemInfo 中的name。对应的是AC xml定义中的
-             * android:name 属性; Public name of this item. From the "android:name" attribute.
-             *-----------------------------------------------------------------------------*/
+            CharSequence labelSeq = info.loadLabel(pm);
             String label = labelSeq != null
                     ? labelSeq.toString()
                     : info.activityInfo.name;
 
-            if (prefix.length() == 0 || label.startsWith(prefix)) {
+            if (prefixWithSlash.length() == 0 || label.startsWith(prefixWithSlash)) {
 
                 String[] labelPath = label.split("/");
 
@@ -136,13 +109,14 @@ public class ApiDemos extends ListActivity {
         return myData;
     }
 
-    private final static Comparator<Map> sDisplayNameComparator = new Comparator<Map>() {
-        private final Collator   collator = Collator.getInstance();
+    private final static Comparator<Map<String, Object>> sDisplayNameComparator =
+            new Comparator<Map<String, Object>>() {
+                private final Collator collator = Collator.getInstance();
 
-        public int compare(Map map1, Map map2) {
-            return collator.compare(map1.get("title"), map2.get("title"));
-        }
-    };
+                public int compare(Map<String, Object> map1, Map<String, Object> map2) {
+                    return collator.compare(map1.get("title"), map2.get("title"));
+                }
+            };
 
     protected Intent activityIntent(String pkg, String componentName) {
         Intent result = new Intent();
@@ -157,7 +131,7 @@ public class ApiDemos extends ListActivity {
         return result;
     }
 
-    protected void addItem(List<Map> data, String name, Intent intent) {
+    protected void addItem(List<Map<String, Object>> data, String name, Intent intent) {
         Map<String, Object> temp = new HashMap<String, Object>();
         temp.put("title", name);
         temp.put("intent", intent);
@@ -165,11 +139,11 @@ public class ApiDemos extends ListActivity {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        Map map = (Map) l.getItemAtPosition(position);
+        Map<String, Object> map = (Map<String, Object>) l.getItemAtPosition(position);
 
         Intent intent = (Intent) map.get("intent");
         startActivity(intent);
     }
-
 }

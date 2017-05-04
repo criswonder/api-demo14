@@ -20,10 +20,16 @@
         xmlns:android="http://schemas.android.com/apk/res/android">
 
     <CheckBoxPreference
-            android:key="default_toggle"
-            android:defaultValue="false"
+            android:key="default_checkbox"
+            android:defaultValue="true"
             android:title="@string/title_checkbox_preference"
             android:summary="@string/summary_checkbox_preference" />
+
+    <SwitchPreference
+            android:key="default_switch"
+            android:defaultValue="false"
+            android:title="@string/title_switch_preference"
+            android:summary="@string/summary_switch_preference" />
 
     <EditTextPreference
             android:key="default_edittext"
@@ -31,7 +37,7 @@
             android:title="@string/title_edittext_preference"
             android:summary="@string/summary_edittext_preference"
             android:dialogTitle="@string/dialog_title_edittext_preference" />
-
+            
     <ListPreference
             android:key="default_list"
             android:defaultValue="@string/default_value_list_preference"

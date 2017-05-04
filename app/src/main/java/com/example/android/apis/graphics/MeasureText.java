@@ -16,13 +16,9 @@
 
 package com.example.android.apis.graphics;
 
-import com.example.android.apis.R;
-
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.*;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.*;
 
 public class MeasureText extends GraphicsActivity {
@@ -32,12 +28,11 @@ public class MeasureText extends GraphicsActivity {
         super.onCreate(savedInstanceState);
         setContentView(new SampleView(this));
     }
-    
+
     private static final int WIDTH = 50;
     private static final int HEIGHT = 50;
     private static final int STRIDE = 64;   // must be >= WIDTH
-	public static final String TAG = "MeasureText";
-    
+
     private static int[] createColors() {
         int[] colors = new int[STRIDE * HEIGHT];
         for (int y = 0; y < HEIGHT; y++) {
@@ -51,16 +46,16 @@ public class MeasureText extends GraphicsActivity {
         }
         return colors;
     }
-    
+
     private static class SampleView extends View {
         private Paint   mPaint;
         private float   mOriginX = 10;
         private float   mOriginY = 80;
-        
+
         public SampleView(Context context) {
             super(context);
             setFocusable(true);
-            
+
             mPaint = new Paint();
             mPaint.setAntiAlias(true);
             mPaint.setStrokeWidth(5);
@@ -69,22 +64,22 @@ public class MeasureText extends GraphicsActivity {
             mPaint.setTypeface(Typeface.create(Typeface.SERIF,
                                                Typeface.ITALIC));
         }
-        
+
         private void showText(Canvas canvas, String text, Paint.Align align) {
          //   mPaint.setTextAlign(align);
-            
+
             Rect    bounds = new Rect();
             float[] widths = new float[text.length()];
 
             int count = mPaint.getTextWidths(text, 0, text.length(), widths);
             float w = mPaint.measureText(text, 0, text.length());
             mPaint.getTextBounds(text, 0, text.length(), bounds);
-            
+
             mPaint.setColor(0xFF88FF88);
             canvas.drawRect(bounds, mPaint);
             mPaint.setColor(Color.BLACK);
             canvas.drawText(text, 0, 0, mPaint);
-            
+
             float[] pts = new float[2 + count*2];
             float x = 0;
             float y = 0;
@@ -98,16 +93,15 @@ public class MeasureText extends GraphicsActivity {
             mPaint.setColor(Color.RED);
             mPaint.setStrokeWidth(0);
             canvas.drawLine(0, 0, w, 0, mPaint);
-            Log.d(TAG, "text="+text+",width="+w);
             mPaint.setStrokeWidth(5);
             canvas.drawPoints(pts, 0, (count + 1) << 1, mPaint);
         }
-        
+
         @Override protected void onDraw(Canvas canvas) {
             canvas.drawColor(Color.WHITE);
-            
+
             canvas.translate(mOriginX, mOriginY);
-            
+
             showText(canvas, "Measure", Paint.Align.LEFT);
             canvas.translate(0, 80);
             showText(canvas, "wiggy!", Paint.Align.CENTER);
@@ -116,4 +110,3 @@ public class MeasureText extends GraphicsActivity {
         }
     }
 }
-

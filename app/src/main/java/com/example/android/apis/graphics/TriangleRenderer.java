@@ -23,7 +23,6 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
-import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -90,7 +89,7 @@ public class TriangleRenderer implements GLSurfaceView.Renderer{
                 GL10.GL_REPLACE);
 
         InputStream is = mContext.getResources()
-                .openRawResource(R.drawable.robot);
+                .openRawResource(R.raw.robot);
         Bitmap bitmap;
         try {
             bitmap = BitmapFactory.decodeStream(is);

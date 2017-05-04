@@ -15,6 +15,7 @@
 -->
 
 <!-- This is a primitive example showing the different types of preferences available. -->
+
 <PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -23,8 +24,20 @@
             
         <CheckBoxPreference
                 android:key="checkbox_preference"
-                android:title="@string/title_toggle_preference"
-                android:summary="@string/summary_toggle_preference" />
+                android:title="@string/title_checkbox_preference"
+                android:summary="@string/summary_checkbox_preference" />
+
+        <SwitchPreference
+                android:key="checkbox_preference"
+                android:title="@string/title_switch_preference"
+                android:summary="@string/summary_switch_preference" />
+
+        <SwitchPreference
+                android:key="checkbox_preference"
+                android:title="@string/title_switch_preference"
+                android:summary="@string/summary_switch_preference_yes_no"
+                android:switchTextOn = "YES"
+                android:switchTextOff = "NO" />
             
     </PreferenceCategory>
                 
@@ -97,3 +110,4 @@
     </PreferenceCategory>
     
 </PreferenceScreen>
+

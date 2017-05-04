@@ -35,8 +35,8 @@ import javax.microedition.khronos.opengles.GL11Ext;
  *
  *
  * OpenGL labels are implemented by creating a Bitmap, drawing all the labels
- * into the Bitmap, converting the Bitmap into an Alpha texture, and creating a
- * mesh for each label
+ * into the Bitmap, converting the Bitmap into an Alpha texture, and drawing
+ * portions of the texture using glDrawTexiOES.
  *
  * The benefits of this approach are that the labels are drawn using the high
  * quality anti-aliased font rasterizer, full character set support, and all the
@@ -246,24 +246,11 @@ public class LabelMaker {
                     textPaint);
         }
 
-        Grid grid = new Grid(2, 2);
-        // Grid.set arguments: i, j, x, y, z, u, v
-
-        float texU = u * mTexelWidth;
-        float texU2 = u2 * mTexelWidth;
-        float texV = 1.0f - v * mTexelHeight;
-        float texV2 = 1.0f - v2 * mTexelHeight;
-
-        grid.set(0, 0,   0.0f,   0.0f, 0.0f, texU , texV2);
-        grid.set(1, 0,  width,   0.0f, 0.0f, texU2, texV2);
-        grid.set(0, 1,   0.0f, height, 0.0f, texU , texV );
-        grid.set(1, 1,  width, height, 0.0f, texU2, texV );
-
         // We know there's enough space, so update the member variables
         mU = u + width;
         mV = v;
         mLineHeight = lineHeight;
-        mLabels.add(new Label(grid, width, height, ascent,
+        mLabels.add(new Label(width, height, ascent,
                 u, v + height, width, -height));
         return mLabels.size() - 1;
     }
@@ -351,17 +338,12 @@ public class LabelMaker {
      */
     public void draw(GL10 gl, float x, float y, int labelID) {
         checkState(STATE_DRAWING, STATE_DRAWING);
-        gl.glPushMatrix();
-        float snappedX = (float) Math.floor(x);
-        float snappedY = (float) Math.floor(y);
-        gl.glTranslatef(snappedX, snappedY, 0.0f);
         Label label = mLabels.get(labelID);
         gl.glEnable(GL10.GL_TEXTURE_2D);
         ((GL11)gl).glTexParameteriv(GL10.GL_TEXTURE_2D,
                 GL11Ext.GL_TEXTURE_CROP_RECT_OES, label.mCrop, 0);
-        ((GL11Ext)gl).glDrawTexiOES((int) snappedX, (int) snappedY, 0,
+        ((GL11Ext)gl).glDrawTexiOES((int) x, (int) y, 0,
                 (int) label.width, (int) label.height);
-        gl.glPopMatrix();
     }
 
     /**
@@ -386,9 +368,8 @@ public class LabelMaker {
     }
 
     private static class Label {
-        public Label(Grid grid, float width, float height, float baseLine,
+        public Label(float width, float height, float baseLine,
                 int cropU, int cropV, int cropW, int cropH) {
-            this.grid = grid;
             this.width = width;
             this.height = height;
             this.baseline = baseLine;
@@ -400,7 +381,6 @@ public class LabelMaker {
             mCrop = crop;
         }
 
-        public Grid grid;
         public float width;
         public float height;
         public float baseline;
